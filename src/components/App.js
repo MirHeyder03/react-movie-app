@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import axios from "axios";
 import AddMovieForm from "./AddMovieForm";
 import Footer from "./Footer";
 import MovieList from "./MovieList";
@@ -11,9 +12,12 @@ class App extends Component {
     search: "",
   };
 
-  deleteMovie = async (movie) => {
-    const url = `http://localhost:3000/movies/${movie.id}`;
-    await fetch(url, { method: "DELETE" });
+  async componentDidMount() {
+    const response = await axios.get(`http://localhost:3002/movies`);
+    this.setState({ movies: response.data });
+  }
+  deleteMovie = (movie) => {
+    axios.delete(`http://localhost:3002/movies/${movie.id}`);
     const newMovieList = this.state.movies.filter(
       (deleteMovie) => deleteMovie.id !== movie.id
     );
@@ -24,20 +28,15 @@ class App extends Component {
     this.setState({ search: e.target.value });
   };
 
-  async componentDidMount() {
-    const url = "http://localhost:3000/movies";
-    const response = await fetch(url);
-    const data = await response.json();
-    this.setState({ movies: data });
-  }
+  addMovie = async (movie) => {
+    await axios.post(`http://localhost:3002/movies/`, movie);
+    this.setState((state) => ({ movies: state.movies.concat([movie]) }));
+  };
 
   render() {
     let filteredMovie = this.state.movies.filter((movie) => {
-      return (
-        movie.Title.toLocaleLowerCase().indexOf(
-          this.state.search.toLocaleLowerCase()
-        ) !== -1
-      );
+      return movie.name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1
+
     });
     return (
       <div className="container mt-3">
@@ -53,14 +52,21 @@ class App extends Component {
                     deleteMovie={this.deleteMovie}
                   />
                 </div>
-                  <Footer />
+                <Footer />
               </React.Fragment>
             }
           ></Route>
-          <Route path="/add" element={<AddMovieForm />}>
-          </Route>
+          <Route
+            path="/add"
+            element={
+              <AddMovieForm
+                addMovie={(movie) => {
+                  this.addMovie(movie);
+                }}
+              />
+            }
+          ></Route>
         </Routes>
-        
       </div>
     );
   }

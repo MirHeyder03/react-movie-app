@@ -6,9 +6,9 @@ export default function MovieList(props) {
     {
       props.movies.map(movie=>(
                 
-    <div className="card movie_card" key={movie.imdbID}>
+    <div className="card movie_card" key={movie.id}>
     <img
-      src={movie.Images}
+      src={movie.imgUrl}
       className="card-img-top"
       alt="..."
     />
@@ -19,10 +19,10 @@ export default function MovieList(props) {
         data-placement="bottom"
         title="Play Trailer"
       ></i>
-      <h5 className="card-title">{movie.Title}</h5>
+      <h5 className="card-title">{movie.name}</h5>
       <button onClick={()=>props.deleteMovie(movie)} className="btn btn-md btn-outline-danger">Delete</button>
       <span className="movie_info float-right align-items-center">
-        <i className="fas fa-star"></i>{movie.imdbRating}</span>
+        <i className="fas fa-star"></i>{movie.imdb}</span>
     </div>
   </div>
       ))

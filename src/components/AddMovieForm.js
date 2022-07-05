@@ -1,54 +1,57 @@
 import React, { Component } from "react";
+import serialize from "form-serialize";
 
 export default class AddMovieForm extends Component {
-
-  handleFromSubmit=(e)=>{
+  handleFormSubmit = (e) => {
     e.preventDefault();
-  }
-  
+    const newMovie = serialize(e.target, { hash: true });
+    this.props.addMovie(newMovie);
+  };
+
   render() {
     return (
       <div>
-        <form class="needs-validation" novalidate onSubmit={this.handleFromSubmit}>
-          <div class="form-row">
-            <div class="col-md-8 mb-3">
-              <label for="validationCustom01">Name</label>
+        <form onSubmit={this.handleFormSubmit} className="needs-validation" noValidate>
+          <div className="form-row">
+            <div className="col-md-8 mb-3">
+              <label htmlFor="movieName">Name</label>
               <input
                 type="text"
-                class="form-control"
-                id="validationCustom01"
+                className="form-control"
+                id="movieName"
+                name="name"
                 required
               />
-              <div class="valid-feedback">Looks good!</div>
             </div>
 
-            <div class="col-md-4 mb-3">
-              <label for="validationCustomUsername">Rating</label>
-              <div class="input-group">
+            <div className="col-md-4 mb-3">
+              <label htmlFor="movieRating">Rating</label>
+              <div className="input-group">
                 <input
                   type="text"
-                  class="form-control"
+                  className="form-control"
+                  id="movieRating"
                   aria-describedby="inputGroupPrepend"
+                  name="imdb"
                   required
                 />
-                <div class="invalid-feedback">Please choose a username.</div>
               </div>
             </div>
           </div>
-          <div class="form-row">
-            <div class="col-md-12 mb-3">
-              <label for="validationCustom03">Image URL</label>
+          <div className="form-row">
+            <div className="col-md-12 mb-3">
+              <label htmlFor="movieUrl">Image URL</label>
               <input
-                type="text"
-                class="form-control"
+                type="url"
+                className="form-control"
+                id="movieUrl"
                 placeholder="url"
+                name="imgUrl"
                 required
               />
-              <div class="invalid-feedback">Please provide a valid city.</div>
             </div>
           </div>
-
-          <button class="btn btn-primary btn-block" type="submit">
+          <button className="btn btn-primary btn-block" type="submit">
             Add movie
           </button>
         </form>

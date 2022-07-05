@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {Link} from "react-router-dom";
 
 export default class SearchForm extends Component {
   handleSubmit=(e)=>{
@@ -17,13 +18,13 @@ export default class SearchForm extends Component {
             aria-describedby="basic-addon2"
           />
           <div className="input-group-append">
-            <button
+            <Link to="/add"
               className="btn btn-outline-danger ml-3"
               style={{ borderRadius: "8px" }}
               type="button"
             >
               Add
-            </button>
+            </Link>
           </div>
         </div>
       </form>
